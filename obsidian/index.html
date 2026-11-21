@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Opening Obsidian</title>
+<style>
+  body{margin:0;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f1ea;color:#222}
+  main{max-width:520px;margin:14vh auto;padding:28px;background:#fff;border-top:3px solid #2f5d50}
+  h1{font-size:22px;margin:0 0 8px}
+  p{margin:0 0 12px}
+  a.b{display:inline-block;margin:6px 10px 0 0;padding:9px 14px;background:#222;color:#fff;text-decoration:none}
+  a.s{color:#2f5d50}
+  .err{border-top-color:#9a5a1f}
+</style>
+</head>
+<body>
+<main id="m">
+  <h1 id="h">Opening Obsidian</h1>
+  <p id="p">If nothing happens, click the button.</p>
+  <p><a class="b" id="go" href="#">Open in Obsidian</a><a class="s" href="#" onclick="window.close();return false">Close this tab</a></p>
+</main>
+<script>
+(function(){
+  var VAULT = 'IDEAVERSE';
+  // Fixed list of destinations. Only these can be opened; nothing else is accepted.
+  var TARGETS = {
+    'today':          {label: "Today's note",     action: 'daily'},
+    'inbox':          {label: 'Vault inbox',      action: 'search', query: 'path:"+/"'},
+    'career-wiki':    {label: 'Career Wiki',      file: 'Career Wiki'},
+    'concept-index':  {label: 'Concept Index',    file: 'Concept Index'},
+    'concepts':       {label: 'Concepts base',    file: 'Concepts.base'},
+    'infographics':   {label: 'Infographics base',file: 'Infographics.base'},
+    'sources':        {label: 'Sources base',     file: 'Sources.base'},
+    'digests':        {label: 'Digests base',     file: 'Digests.base'},
+    'digest-index':   {label: 'Digest Index',     file: 'Digest Index'},
+    'vault-map':      {label: 'Vault Map',        file: 'Vault Map'},
+    'content-program':{label: 'Content Program',  file: 'Content Program'},
+    'voice-guide':    {label: 'Voice Guide',      file: 'Voice Guide'},
+    'home':           {label: 'Home hub',         file: 'Home'},
+    'family':         {label: 'Family hub',       file: 'Family'}
+  };
+  var key = (new URLSearchParams(location.search).get('to') || '').toLowerCase();
+  var t = TARGETS[key];
+  if (!t) {
+    document.getElementById('m').className = 'err';
+    document.getElementById('h').textContent = 'Unknown destination';
+    document.getElementById('p').textContent = 'This link does not match a note on the list. Ask your chief of staff to add it.';
+    document.getElementById('go').style.display = 'none';
+    return;
+  }
+  var e = encodeURIComponent, url;
+  if (t.action === 'daily') url = 'obsidian://daily?vault=' + e(VAULT);
+  else if (t.action === 'search') url = 'obsidian://search?vault=' + e(VAULT) + '&query=' + e(t.query);
+  else url = 'obsidian://open?vault=' + e(VAULT) + '&file=' + e(t.file);
+  document.title = 'Opening ' + t.label;
+  document.getElementById('h').textContent = 'Opening ' + t.label + ' in Obsidian';
+  document.getElementById('p').textContent = 'The first time, Chrome asks to open Obsidian. Tick "Always allow" and click Open. If nothing happens, click the button.';
+  var go = document.getElementById('go'); go.href = url;
+  location.href = url;
+})();
+</script>
+</body>
+</html>
