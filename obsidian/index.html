@@ -27,7 +27,7 @@
   // Fixed list of destinations. Only these can be opened; nothing else is accepted.
   var TARGETS = {
     'today':          {label: "Today's note",     action: 'daily'},
-    'inbox':          {label: 'Vault inbox',      action: 'search', query: 'path:"+/"'},
+    'inbox':          {label: 'Vault inbox',      action: 'search', query: 'path:"+/" -path:"+/Processed" -file:README'},
     'career-wiki':    {label: 'Career Wiki',      file: 'Career Wiki'},
     'concept-index':  {label: 'Concept Index',    file: 'Concept Index'},
     'concepts':       {label: 'Concepts base',    file: 'Concepts.base'},
