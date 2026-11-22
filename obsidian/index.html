@@ -39,7 +39,8 @@
     'content-program':{label: 'Content Program',  file: 'Content Program'},
     'voice-guide':    {label: 'Voice Guide',      file: 'Voice Guide'},
     'home':           {label: 'Home hub',         file: 'Home'},
-    'family':         {label: 'Family hub',       file: 'Family'}
+    'family':         {label: 'Family hub',       file: 'Family'},
+    'chief-of-staff': {label: 'Chief of Staff project', app: 'Claude', url: 'claude://claude.ai/project/01a10e5a-6e43-77c4-b8fb-4744f62db15c'}
   };
   var key = (new URLSearchParams(location.search).get('to') || '').toLowerCase();
   var t = TARGETS[key];
@@ -51,12 +52,15 @@
     return;
   }
   var e = encodeURIComponent, url;
-  if (t.action === 'daily') url = 'obsidian://daily?vault=' + e(VAULT);
+  var app = t.app || 'Obsidian';
+  if (t.url) url = t.url;
+  else if (t.action === 'daily') url = 'obsidian://daily?vault=' + e(VAULT);
   else if (t.action === 'search') url = 'obsidian://search?vault=' + e(VAULT) + '&query=' + e(t.query);
   else url = 'obsidian://open?vault=' + e(VAULT) + '&file=' + e(t.file);
   document.title = 'Opening ' + t.label;
-  document.getElementById('h').textContent = 'Opening ' + t.label + ' in Obsidian';
-  document.getElementById('p').textContent = 'The first time, Chrome asks to open Obsidian. Tick "Always allow" and click Open. If nothing happens, click the button.';
+  document.getElementById('h').textContent = 'Opening ' + t.label + ' in ' + app;
+  document.getElementById('p').textContent = 'The first time, Chrome asks to open ' + app + '. Tick "Always allow" and click Open. If nothing happens, click the button.';
+  document.getElementById('go').textContent = 'Open in ' + app;
   var go = document.getElementById('go'); go.href = url;
   location.href = url;
 })();
